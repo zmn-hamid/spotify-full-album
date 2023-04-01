@@ -2,6 +2,4 @@ tests/
 __pycache__/
 .cache
 config.py
-
-!scripts/
-!full_album.py
+full_album.cmd
