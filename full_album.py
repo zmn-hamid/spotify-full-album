@@ -52,11 +52,12 @@ def main(artist_url: str):
                 else:
                     total_tracks.append(track_name)
                     print_new_track(track_name)
+    print(Style.header('---------'))
 
     print()
     print()
 
-    # process else
+    # process others
     print(Style.header('--- OTHERS ---'))
     for album in artist_albums:
         if album['album_group'].lower() not in ['album', 'appears_on']:
@@ -69,6 +70,7 @@ def main(artist_url: str):
                 else:
                     total_tracks.append(track_name)
                     print_new_track(track_name)
+    print(Style.header('---------'))
 
     print()
     print()
@@ -90,6 +92,11 @@ def main(artist_url: str):
                             total_tracks.append(track_name)
                             print_new_track(track_name)
                         break
+    print(Style.header('---------'))
+
+    print()
+    print()
+    print(Style.header(BLOCK+BLOCK+BLOCK+' finished'))
 
 
 if __name__ == '__main__':
