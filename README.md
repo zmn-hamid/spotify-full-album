@@ -1,6 +1,6 @@
 # Spotify Full Album Finder
 
-Find and spot every release of you're chosen artist in spotify.
+Find and spot every release of your chosen artist in spotify.
 
 #### Features
 
