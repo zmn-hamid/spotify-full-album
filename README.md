@@ -4,8 +4,10 @@ Find and spot every release of you're chosen artist in spotify.
 
 #### Features
 
-- Showing the repetitive tracks in <span style="text-decoration: line-through; color: yellow; background-color:black">strikethrough yellow</span> and other first-appeared tracks in <span style="color: lightgreen; background-color:black">green</span>
-- Albums are first analyzed, then singles/EPs/etc, then appears-ons. So if the song is in a album, it shows it in green only for the album.
+- Showing the repetitive tracks in a strikethrough yellow and other first-appeared tracks in green
+- In the first, albums analyzed, then singles/EPs/etc, then 'appears-on's. So if the song is in a album, it shows it in green only for the album.
+
+---
 
 ### Getting Started
 
@@ -20,8 +22,8 @@ My python version: 3.11.2
    `python install -r requirements.txt`
 2. Make a `config.py` file in the root directory, and put this text inside it:
    ```
-   SPOT_CLIENT_ID =  'Your Client ID'
-   SPOT_CLIENT_SECRET =  'Your Client Secret'
+   SPOT_CLIENT_ID = 'Your Client ID'
+   SPOT_CLIENT_SECRET = 'Your Client Secret'
    ```
    to find your client ID and secret, make an app in [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) and find them in the settings of the app.
 
@@ -31,7 +33,9 @@ Once you're in the root directory, simply run the app using `python full_album.p
 
 ## Demo
 
-![Demo Video](./demo/demo.mp4)
+https://user-images.githubusercontent.com/129656474/229351305-b39e9abc-d045-453a-a54c-18670cef3fa9.mp4
+
+---
 
 #### Contributing
 
@@ -63,10 +67,12 @@ MIT License
 
 This project is free and open-source. You can use, modify, and distribute it without any restrictions.
 
+---
+
 ## Contact
 
 If you have any questions or feedback about this project, feel free to get in touch with me:
 
 - Email: zmn-hamid@proton.me
-- [Telegram](t.me/hamid1780)
+- [Telegram](https://t.me/hamid1780)
 - [GitHub Issues](https://github.com/zmn-hamid/spotify-full-album/issues)
