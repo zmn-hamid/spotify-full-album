@@ -25,7 +25,7 @@ class SpotifyManager:
     @staticmethod
     def get_link(album: dict) -> str:
         return album['external_urls']['spotify']
- 
+
     @staticmethod
     def _album_info(album: dict) -> dict:
         return {
@@ -40,10 +40,12 @@ class SpotifyManager:
                 'id': artist['id'],
                 'url': artist['external_urls']['spotify'],
             } for artist in album['artists']],
-            'url': album['external_urls']['spotify'],
+            'urls': [
+                album['external_urls']['spotify'],
+            ],
             'total_tracks': album['total_tracks'],
         }
-    
+
     @staticmethod
     def _get_albums(artist: str,
                     total: list = [],
@@ -122,7 +124,8 @@ class SpotifyManager:
                 cond &= album['album_type'] == prev_album['album_type']
                 cond &= album['artists'] == prev_album['artists']
                 if cond:
-                    _albums[-1]['links'].append(SpotifyManager.get_link(album))
+                    _albums[-1]['urls'].append(SpotifyManager.get_link(album))
+                    _albums[-1]['url'] = SpotifyManager.get_link(album)
                 else:
                     _albums.append(SpotifyManager._album_info(album))
 
@@ -160,10 +163,11 @@ class SpotifyManager:
                 offset=offset+50
             )
         return total
-    
+
     @staticmethod
     def get_tracks(album_id: str):
-        tracks = SpotifyManager._get_tracks(album_id=album_id, total=[], offset=0)
+        tracks = SpotifyManager._get_tracks(
+            album_id=album_id, total=[], offset=0)
         return [SpotifyManager._track_info(track) for track in tracks]
 
     @staticmethod
@@ -201,12 +205,12 @@ class SpotifyManager:
                 1970, 1, 1, tzinfo=datetime.timezone.utc
             )
         ).total_seconds()
-    
+
 
 if __name__ == '__main__':
-    artist_url = 'https://open.spotify.com/artist/1hLiboQ98IQWhpKeP9vRFw?si=d0d6785d19b5423b' # boygenius
-    artist_url = 'https://open.spotify.com/artist/6S3Z6Me30mtdm526H17v8k?si=4gmhl2Z9T2mXq7wpeDG7ew' # jockstrap
-    artist_url = 'https://open.spotify.com/artist/7mRVAzlt1fAAR9Cut6Rq8c?si=28f9e80606d24d7a' # dave grohl
+    artist_url = 'https://open.spotify.com/artist/1hLiboQ98IQWhpKeP9vRFw?si=d0d6785d19b5423b'  # boygenius
+    artist_url = 'https://open.spotify.com/artist/6S3Z6Me30mtdm526H17v8k?si=4gmhl2Z9T2mXq7wpeDG7ew'  # jockstrap
+    artist_url = 'https://open.spotify.com/artist/7mRVAzlt1fAAR9Cut6Rq8c?si=28f9e80606d24d7a'  # dave grohl
     # albums = SpotifyManager.get_albums(artist_url, None)[::-1]
     albums = SpotifyManager.get_tracks('7M6NyPARixmFv74BbgUFFg')
     mein.dumps(albums, 'out')

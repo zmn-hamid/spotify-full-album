@@ -1,0 +1,2 @@
+spotipy==2.21.0
+termcolor==2.2.0

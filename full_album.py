@@ -11,7 +11,7 @@ def print_album(album_obj):
         album_obj['name']),
         album_obj['album_group'],
         album_obj['release_date'],
-        album_obj['url']))
+        album_obj['urls'][0]))
 
 
 def print_new_track(track_name):
