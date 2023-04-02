@@ -5,7 +5,7 @@ Find and spot every release of your chosen artist in spotify.
 #### Features
 
 - Showing the repetitive tracks in a strikethrough yellow and other first-appeared tracks in green
-- In the first, albums analyzed, then singles/EPs/etc, then 'appears-on's. So if the song is in a album, it shows it in green only for the album.
+- Fist, albums analyzed, then singles/EPs/etc, then 'appears-on's. So if the song is in a album, it shows it in green only for the album.
 
 ## Getting Started
 
