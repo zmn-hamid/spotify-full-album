@@ -5,7 +5,7 @@ Find and spot every release of your chosen artist in spotify.
 #### Features
 
 - Showing the repetitive tracks in a strikethrough yellow and other first-appeared tracks in green
-- Fist, albums analyzed, then singles/EPs/etc, then 'appears-on's. So if the song is in a album, it shows it in green only for the album.
+- Fist, albums are analyzed, then singles/EPs/etc, then 'appears on's. So if the song is in a album, it shows it in green only for the album.
 
 ## Getting Started
 
@@ -14,7 +14,7 @@ Find and spot every release of your chosen artist in spotify.
 You need to install python 3 and add it to your systems path.
 My python version: 3.11.2
 
-#### Installation
+### Installation
 
 1. Open terminal in the root directory and install requirement with this command:
    `python install -r requirements.txt`
@@ -37,22 +37,22 @@ https://user-images.githubusercontent.com/129656474/229351305-b39e9abc-d045-453a
 
 Than you in advnace for your contribution to this project. As a new developer, I appreciate everyone who joins this project.
 
-##### Motivation
+#### Motivation
 
 I started this project because I didn't want to miss some of my favorite artists' releases when I'm listening to their full album. Looking for hidden gems, you know :D
 
-##### Scope
+#### Scope
 
 The project has already reached its main goal, but improvements can still be done. Such as a GUI interface.
 
-##### How To Contribute
+#### How To Contribute
 
 1. Fork this repository and clone it.
 2. Make your desired changes to the project.
 3. Commit your changes to the forked repository.
 4. Submit a pull request to the main respoitory.
 
-##### Guidelines for Contributions
+#### Guidelines for Contributions
 
 - Consider to keep the same coding style and conventions.
 - Write clear and precise commit messages.
