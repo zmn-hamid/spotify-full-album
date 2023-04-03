@@ -1,29 +1,40 @@
 import spotipy
-import datetime
 import string
-from spotipy.oauth2 import SpotifyClientCredentials
-from typing import *
-from difflib import SequenceMatcher
+import datetime
 
-import mein
-from config import SPOT_CLIENT_ID, SPOT_CLIENT_SECRET
+from spotipy.oauth2 import SpotifyClientCredentials
+from difflib import SequenceMatcher
+from typing import *
+
+import config as CONFIG
 
 
 spot = spotipy.Spotify(
     client_credentials_manager=SpotifyClientCredentials(
-        client_id=SPOT_CLIENT_ID,
-        client_secret=SPOT_CLIENT_SECRET,
+        client_id=CONFIG.SPOT_CLIENT_ID,
+        client_secret=CONFIG.SPOT_CLIENT_SECRET,
     )
 )
 
 
-class SpotifyManager:
+class SpotifyHandler:
     @staticmethod
     def get_artist(artist_id: str) -> Tuple[str, str]:
-        return spot.artist(artist_id)
+        '''`artist_id` : artist ID/URL/URI'''
+        try:
+            artist = spot.artist(artist_id)
+            if artist['type'] != 'artist':
+                raise Exception
+            return artist
+        except Exception as e:
+            print(f'UserError: {e}')
 
     @staticmethod
     def get_link(album: dict) -> str:
+        '''
+        to get the link of an album received from spotipy
+        >>> get_link(album)
+        '''
         return album['external_urls']['spotify']
 
     @staticmethod
@@ -51,11 +62,16 @@ class SpotifyManager:
                     total: list = [],
                     offset: int = 0,
                     album_type: str = None) -> list:
+        '''
+        gets total albums of an artist (with no changes)
+        >>> album_type='album,single,compilation,appears_on'
+        >>> _get_albums('2iHrc69sZgyWFBAhLpS3oH')
+        '''
         albums = spot.artist_albums(artist, offset=offset, limit=50,
-                                    album_type=album_type)  # album_type='album,single,compilation'
+                                    album_type=album_type)
         total += albums['items']
         if albums['next']:
-            total = SpotifyManager._get_albums(
+            total = SpotifyHandler._get_albums(
                 artist=artist,
                 total=total,
                 offset=offset+50
@@ -67,16 +83,21 @@ class SpotifyManager:
                    show_first: int = 7,
                    artist_name: str = None,
                    album_type: str = None) -> dict:
+        '''
+        use `show_first=None` to get all the albums\n
+        use `artist_name` if you've already checked the artist and have the artist's name and id
+        >>> get_albums('2iHrc69sZgyWFBAhLpS3oH')
+        '''
         if not artist_name:
             artist_obj = spot.artist(artist_id)
             artist_name, artist_id = artist_obj['name'], artist_obj['id']
-        albums = SpotifyManager._get_albums(
+        albums = SpotifyHandler._get_albums(
             artist=artist_id,
             total=[],
             album_type=album_type,
         )
         albums.sort(
-            key=lambda album: SpotifyManager.str_to_time(
+            key=lambda album: SpotifyHandler.str_to_time(
                 album['release_date']),
             reverse=True,
         )
@@ -90,12 +111,12 @@ class SpotifyManager:
             if album['album_group'] == 'appears_on' and album['artists'][0]['name'] == 'Various Artists':
                 continue
             if idx == 0:
-                _albums.append(SpotifyManager._album_info(album))
+                _albums.append(SpotifyHandler._album_info(album))
             else:
                 prev_album = albums[idx-1]
                 cond = abs(
-                    SpotifyManager.str_to_time(
-                        album['release_date']) - SpotifyManager.str_to_time(prev_album['release_date'])
+                    SpotifyHandler.str_to_time(
+                        album['release_date']) - SpotifyHandler.str_to_time(prev_album['release_date'])
                 ) <= abs(datetime.timedelta(days=1).total_seconds())
 
                 # check similarity in names
@@ -124,10 +145,9 @@ class SpotifyManager:
                 cond &= album['album_type'] == prev_album['album_type']
                 cond &= album['artists'] == prev_album['artists']
                 if cond:
-                    _albums[-1]['urls'].append(SpotifyManager.get_link(album))
-                    _albums[-1]['url'] = SpotifyManager.get_link(album)
+                    _albums[-1]['urls'].append(SpotifyHandler.get_link(album))
                 else:
-                    _albums.append(SpotifyManager._album_info(album))
+                    _albums.append(SpotifyHandler._album_info(album))
 
         if show_first:
             _albums = _albums[:show_first]
@@ -157,7 +177,7 @@ class SpotifyManager:
         albums = spot.album_tracks(album_id, limit=50, offset=offset)
         total += albums['items']
         if albums['next']:
-            total = SpotifyManager._get_tracks(
+            total = SpotifyHandler._get_albums(
                 album_id=album_id,
                 total=total,
                 offset=offset+50
@@ -166,16 +186,21 @@ class SpotifyManager:
 
     @staticmethod
     def get_tracks(album_id: str):
-        tracks = SpotifyManager._get_tracks(
+        tracks = SpotifyHandler._get_tracks(
             album_id=album_id, total=[], offset=0)
-        return [SpotifyManager._track_info(track) for track in tracks]
+        return [SpotifyHandler._track_info(track) for track in tracks]
 
     @staticmethod
     def similarity(a: str, b: str) -> float:
+        '''the percentage of similarity between a and b'''
         return SequenceMatcher(None, a, b).ratio()*100
 
     @staticmethod
     def str_to_time(string: str) -> int:
+        '''
+        returns total timestamp (even before 1970)
+        >>> str_to_time('2018-19-26') in utc
+        '''
         _split = string.split('-')
         if len(_split) == 0:
             _split.append('0001')
@@ -205,12 +230,3 @@ class SpotifyManager:
                 1970, 1, 1, tzinfo=datetime.timezone.utc
             )
         ).total_seconds()
-
-
-if __name__ == '__main__':
-    artist_url = 'https://open.spotify.com/artist/1hLiboQ98IQWhpKeP9vRFw?si=d0d6785d19b5423b'  # boygenius
-    artist_url = 'https://open.spotify.com/artist/6S3Z6Me30mtdm526H17v8k?si=4gmhl2Z9T2mXq7wpeDG7ew'  # jockstrap
-    artist_url = 'https://open.spotify.com/artist/7mRVAzlt1fAAR9Cut6Rq8c?si=28f9e80606d24d7a'  # dave grohl
-    # albums = SpotifyManager.get_albums(artist_url, None)[::-1]
-    albums = SpotifyManager.get_tracks('7M6NyPARixmFv74BbgUFFg')
-    mein.dumps(albums, 'out')

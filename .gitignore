@@ -1,5 +1,9 @@
-tests/
 __pycache__/
 .cache
+
 config.py
 full_album.cmd
+
+/temp/
+
+/scripts/JSON_Handler.py
