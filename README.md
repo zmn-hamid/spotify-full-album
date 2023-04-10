@@ -17,7 +17,9 @@ My python version: 3.11.2
 ### Installation
 
 1. Open terminal in the root directory and install requirement with this command:
-   `pip install -r requirements.txt`
+   ```
+   pip install -r requirements.txt
+   ```
 2. Make a `config.py` file in the root directory, and put this text inside it:
    ```
    SPOT_CLIENT_ID = 'Your Client ID'
