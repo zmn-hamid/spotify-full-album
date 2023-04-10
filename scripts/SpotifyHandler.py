@@ -177,7 +177,7 @@ class SpotifyHandler:
         albums = spot.album_tracks(album_id, limit=50, offset=offset)
         total += albums['items']
         if albums['next']:
-            total = SpotifyHandler._get_albums(
+            total = SpotifyHandler._get_tracks(
                 album_id=album_id,
                 total=total,
                 offset=offset+50
