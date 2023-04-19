@@ -41,8 +41,8 @@ def main(artist_url: str):
     print()
     print()
 
-    # process albums
-    print(Style.header('--- ALBUMS ---'))
+    # process albums [from first to last]
+    print(Style.header('--- ALBUMS [from first to last] ---'))
     for album in SpotifyHandler.get_albums(artist_id, None, album_type='album')['albums'][::-1]:
         if album['album_group'].lower() == 'album':
             CPrint.album(album)
@@ -59,15 +59,15 @@ def main(artist_url: str):
     print()
     print()
 
-    # process singles
-    print(Style.header('--- OTHERS ---'))
+    # process singles [from last to first]
+    print(Style.header('--- OTHERS [from last to first] ---'))
     total = [
         *SpotifyHandler.get_albums(artist_id, None,
-                                   album_type='single')['albums'][::-1],
+                                   album_type='single')['albums'],
         *SpotifyHandler.get_albums(artist_id, None,
-                                   album_type='compilation')['albums'][::-1]
+                                   album_type='compilation')['albums']
     ]
-    total.sort(key=lambda item: SpotifyHandler.str_to_time(
+    total.sort(key=lambda item: -1*SpotifyHandler.str_to_time(
         item['release_date']))
     for album in total:
         if album['album_group'].lower() not in ['album', 'appears_on']:
@@ -86,7 +86,7 @@ def main(artist_url: str):
     print()
 
     # process appears_on
-    print(Style.header('--- APPEARS ON ---'))
+    print(Style.header('--- APPEARS ON [from first to last] ---'))
     for album in SpotifyHandler.get_albums(artist_id, None, album_type='appears_on')['albums'][::-1]:
         if album['album_group'].lower() == 'appears_on':
             CPrint.album(album)
